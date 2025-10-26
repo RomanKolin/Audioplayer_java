@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane alignment="CENTER_LEFT">
+    <Label style="-fx-font-family: Times New Roman; -fx-font-style: italic; -fx-font-weight: bold; -fx-font-size: 36; -fx-text-fill: #4B0000" text="&#119136;"/>
+</StackPane>

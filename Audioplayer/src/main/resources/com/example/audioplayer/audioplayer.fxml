@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.geometry.Insets?>
+
+<FlowPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.audioplayer.audioplayer" orientation="VERTICAL" prefWidth="700" prefHeight="200" style="-fx-background-image: url(/background.jpg); -fx-background-size: stretch">
+    <padding>
+        <Insets bottom="5" left="5" top="5" right="5"/>
+    </padding>
+    <HBox>
+        <padding>
+            <Insets left="-5" right="-12"/>
+        </padding>
+        <HBox alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="7"/>
+            </padding>
+            <Slider fx:id="slider1music" prefWidth="609" stylesheets="/slider.css">
+            </Slider>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT">
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="button1play" text="&#x25B8;" prefWidth="36" prefHeight="36" style="-fx-background-insets: 18; -fx-padding: 0; -fx-font-family: Times New Roman; -fx-font-size: 36; -fx-text-fill: #4B0000" onAction="#button1play"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+                <padding>
+                    <Insets top="2"/>
+                </padding>
+                <Button fx:id="button2pause" text="&#x007C;&#x007C;" prefWidth="36" prefHeight="36" style="-fx-background-insets: 18; -fx-padding: 0; -fx-font-family: Times New Roman; -fx-font-weight: bold; -fx-font-size: 20; -fx-text-fill: #4B0000" onAction="#button2pause"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+                <padding>
+                    <Insets top="2"/>
+                </padding>
+                <Button fx:id="button3stop" text="&#x25A0;" prefWidth="36" prefHeight="36" style="-fx-background-insets: 13; -fx-padding: 0; -fx-font-family: Times New Roman; -fx-font-weight: bold; -fx-font-size: 20; -fx-text-fill: #4B0000" onAction="#button3stop"/>
+            </HBox>
+        </HBox>
+    </HBox>
+    <VBox>
+        <VBox>
+            <padding>
+                <Insets left="-6" right="-6"/>
+            </padding>
+            <HBox fx:id="HBox1dragndrop">
+                <TableView fx:id="tableview1songs" prefWidth="712" prefHeight="103" style="-fx-focus-color: #FF0000; -fx-faint-focus-color: transparent; -fx-font-family: Times New Roman; -fx-font-size: 14; -fx-text-fill: #000000" stylesheets="/tableview.css"/>
+            </HBox>
+        </VBox>
+        <HBox>
+            <padding>
+                <Insets top="3"/>
+            </padding>
+            <Label fx:id="label5metadata" prefWidth="700" prefHeight="25" alignment="CENTER_RIGHT" style="-fx-font-family: Times New Roman; -fx-font-style: italic; -fx-font-weight: bold; -fx-font-size: 12; -fx-text-fill: #000000" text="Data: 0 MB, 0 kbps, 0 Hz Track: 0/0 Playtime: 0:0/0:0"/>
+        </HBox>
+    </VBox>
+</FlowPane>

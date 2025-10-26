@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<FlowPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.audioplayer.metadatachanging" orientation="VERTICAL" prefWidth="350" prefHeight="50" style="-fx-background-image: url(/background.jpg); -fx-background-size: stretch">
+    <padding>
+        <Insets bottom="5" left="5" top="5" right="5"/>
+    </padding>
+    <HBox>
+        <VBox>
+            <HBox>
+                <Label prefWidth="50" prefHeight="25" style="-fx-font-family: Times New Roman; -fx-font-size: 12; -fx-text-fill: #000000" text="Artist"/>
+                <TextField fx:id="textfield1artist" prefWidth="300" prefHeight="25" style="-fx-focus-color: #FF0000; -fx-faint-focus-color: transparent; -fx-highlight-fill: #FF0000; -fx-font-family: Times New Roman; -fx-font-style: italic; -fx-font-size: 12; -fx-text-fill: #000000"/>
+            </HBox>
+            <HBox>
+                <Label prefWidth="50" prefHeight="25" style="-fx-font-family: Times New Roman; -fx-font-size: 12; -fx-text-fill: #000000" text="Title"/>
+                <TextField fx:id="textfield2title" prefWidth="300" prefHeight="25" style="-fx-focus-color: #FF0000; -fx-faint-focus-color: transparent; -fx-highlight-fill: #FF0000; -fx-font-family: Times New Roman; -fx-font-style: italic; -fx-font-size: 12; -fx-text-fill: #000000"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="button4ok" text="OK" prefWidth="75" prefHeight="25" style="-fx-background-color: #4B0000; -fx-font-family: Times New Roman; -fx-font-style: italic; -fx-font-size: 14; -fx-text-fill: #FFFFFF" onAction="#button4ok"/>
+                <Button fx:id="button5cancel" text="Cancel" prefWidth="75" prefHeight="25" style="-fx-background-color: #4B0000; -fx-font-family: Times New Roman; -fx-font-style: italic; -fx-font-size: 14; -fx-text-fill: #FFFFFF" onAction="#button5cancel"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</FlowPane>
