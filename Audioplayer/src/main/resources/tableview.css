@@ -2,7 +2,7 @@
 .placeholder .label{-fx-text-fill: transparent}
 .column-header-background{-fx-background-color: transparent; -fx-border-width: 0 0 1 0; -fx-border-color: #4B0000}
 .column-header .label{-fx-alignment: CENTER_LEFT; -fx-background-color: transparent}
-.column-header .text{-fx-font-weight:bold; -fx-fill: #000000}
+.column-header .text{-fx-font-weight: bold; -fx-fill: #000000}
 .filler{-fx-background-color: transparent}
 .table-column{-fx-alignment: CENTER; -fx-background-color: transparent}
 .table-cell{-fx-border-width: 0 0 0 0; -fx-alignment: CENTER_LEFT}
