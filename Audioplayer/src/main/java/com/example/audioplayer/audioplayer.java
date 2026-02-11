@@ -21,7 +21,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.MapChangeListener;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.binding.Bindings;
@@ -634,43 +633,42 @@ public class audioplayer extends Application
         }
         if (audioplayerdat != null)
         {
-            audiodat.getMetadata().addListener((MapChangeListener<String, Object>) ml ->
-                    audioplayerdat.setOnReady(() ->
+            audioplayerdat.setOnReady(() ->
+            {
+                songsdatlist.set(newsong, new String[]{String.valueOf(newsong), String.valueOf(audiodat.getMetadata().get("artist")).replace("null", "-"), String.valueOf(audiodat.getMetadata().get("title")).replace("null", "-"), Math.round(audioplayerdat.getTotalDuration().toSeconds())/60 + ":" + Math.round(audioplayerdat.getTotalDuration().toSeconds())%60, audiofilepath.get(newsong)[0]});
+                totplaytim = totplaytim.plusSeconds(Math.round(audioplayerdat.getTotalDuration().toSeconds()));
+                lastplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0);
+                for (int i = 0; i <= song-1; i++)
+                    lastplaytim = lastplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                tableview1.setItems(songsdatlist);
+                label5.setText("Data: 0 MB, 0 kbps, 0 Hz Track: 0/" + newsong + " Playtime: 0:0/0:0/0:0");
+                if (noaddsongs > 1)
+                {
+                    newsong+=1;
+                    songsdatlist.add(songsdatlist.size(), new String[]{null, null, null, null, audiofilepath.get(newsong)[0]});
+                    noaddsongs-=1;
+                    nosongs+=1;
+                    audioplayerdat.dispose();
+                    SongsMetadata();
+                }
+                else
+                {
+                    noaddsongs = 0;
+                    newsong+=1;
+                    nosongs+=1;
+                    audioplayerdat.dispose();
+                    button1.removeEventFilter(MouseEvent.ANY, me);
+                    button2.removeEventFilter(MouseEvent.ANY, me);
+                    button3.removeEventFilter(MouseEvent.ANY, me);
+                    tableview1.removeEventFilter(MouseEvent.ANY, me);
+                    SongData();
+                    if (openwithgetparam == 1 && nosongs==1)
                     {
-                        songsdatlist.set(newsong, new String[]{String.valueOf(newsong), String.valueOf(audiodat.getMetadata().get("artist")), String.valueOf(audiodat.getMetadata().get("title")), Math.round(audioplayerdat.getTotalDuration().toSeconds())/60 + ":" + Math.round(audioplayerdat.getTotalDuration().toSeconds())%60, audiofilepath.get(newsong)[0]});
-                        totplaytim = totplaytim.plusSeconds(Math.round(audioplayerdat.getTotalDuration().toSeconds()));
-                        lastplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0);
-                        for (int i = 0; i <= song-1; i++)
-                            lastplaytim = lastplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
-                        tableview1.setItems(songsdatlist);
-                        label5.setText("Data: 0 MB, 0 kbps, 0 Hz Track: 0/" + newsong + " Playtime: 0:0/0:0/0:0");
-                        if (noaddsongs > 1)
-                        {
-                            newsong+=1;
-                            songsdatlist.add(songsdatlist.size(), new String[]{null, null, null, null, audiofilepath.get(newsong)[0]});
-                            noaddsongs-=1;
-                            nosongs+=1;
-                            audioplayerdat.dispose();
-                            SongsMetadata();
-                        }
-                        else
-                        {
-                            noaddsongs = 0;
-                            newsong+=1;
-                            nosongs+=1;
-                            audioplayerdat.dispose();
-                            button1.removeEventFilter(MouseEvent.ANY, me);
-                            button2.removeEventFilter(MouseEvent.ANY, me);
-                            button3.removeEventFilter(MouseEvent.ANY, me);
-                            tableview1.removeEventFilter(MouseEvent.ANY, me);
-                            SongData();
-                            if (openwithgetparam == 1 && nosongs==1)
-                            {
-                                button1.fire();
-                                openwithgetparam = 0;
-                            }
-                        }
-                    }));
+                        button1.fire();
+                        openwithgetparam = 0;
+                    }
+                }
+            });
         }
     }
 
@@ -685,8 +683,16 @@ public class audioplayer extends Application
         try
         {
             afio = AudioFileIO.read(fil);
-            currart = afio.getTag().getFirst(FieldKey.ARTIST);
-            currtitl = afio.getTag().getFirst(FieldKey.TITLE);
+            try
+            {
+                currart = afio.getTag().getFirst(FieldKey.ARTIST);
+                currtitl = afio.getTag().getFirst(FieldKey.TITLE);
+            }
+            catch (Exception e)
+            {
+                currart = "null";
+                currtitl = "null";
+            }
             afio.delete();
             tag = new ID3v24Tag();
             afio.setTag(tag);
