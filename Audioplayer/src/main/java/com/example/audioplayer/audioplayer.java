@@ -381,10 +381,20 @@ public class audioplayer extends Application
                             audioplayer.dispose();
                         if (song < Integer.parseInt(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItem()).get(0)))
                             for (int i = song; i < Integer.parseInt(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItem()).get(0)); i++)
-                                lastplaytim = lastplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                            {
+                                if (songsdatlist.get(i)[3].split(":").length==2)
+                                    lastplaytim = lastplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                                else
+                                    lastplaytim = lastplaytim.plusHours(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[1])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[2]));
+                            }
                         else
                             for (int i = Integer.parseInt(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItem()).get(0)); i < song; i++)
-                                lastplaytim = lastplaytim.minusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).minusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                            {
+                                if (songsdatlist.get(i)[3].split(":").length==2)
+                                    lastplaytim = lastplaytim.minusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).minusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                                else
+                                    lastplaytim = lastplaytim.minusHours(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).minusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[1])).minusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[2]));
+                            }
                         song = Integer.parseInt(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItem()).get(0));
                         play = 0;
                         button1play.fire();
@@ -447,7 +457,12 @@ public class audioplayer extends Application
                                         song-=1;
                             }
                             for (int i = 0; i <= song-1; i++)
-                                lastplaytim = lastplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                            {
+                                if (songsdatlist.get(i)[3].split(":").length==2)
+                                    lastplaytim = lastplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                                else
+                                    lastplaytim = lastplaytim.plusHours(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[1])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[2]));
+                            }
                             movsongdat = new String[5];
                         }
                         else
@@ -482,7 +497,10 @@ public class audioplayer extends Application
                     {
                         if (i < song)
                         {
-                            lastplaytim = lastplaytim.minusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).minusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                            if (songsdatlist.get(i)[3].split(":").length==2)
+                                lastplaytim = lastplaytim.minusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).minusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                            else
+                                lastplaytim = lastplaytim.minusHours(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).minusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[1])).minusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[2]));
                             nodelsong-=1;
                         }
                         else if (i == song && play == 1)
@@ -506,7 +524,10 @@ public class audioplayer extends Application
                     for (int i = 0; i < songsdatlist.size(); i++)
                     {
                         audiofilepath.add(i, new String[]{String.valueOf(songsdatlist.get(i)[4])});
-                        totplaytim = totplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                        if (songsdatlist.get(i)[3].split(":").length==2)
+                            totplaytim = totplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                        else
+                            totplaytim = totplaytim.plusHours(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[1])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[2]));
                     }
                     tableview1songs.getSelectionModel().clearSelection();
                     for (int i = 0; i < songsdatlist.size(); i++)
@@ -635,11 +656,16 @@ public class audioplayer extends Application
         {
             audioplayerdat.setOnReady(() ->
             {
-                songsdatlist.set(newsong, new String[]{String.valueOf(newsong), String.valueOf(audiodat.getMetadata().get("artist")).replace("null", "-"), String.valueOf(audiodat.getMetadata().get("title")).replace("null", "-"), Math.round(audioplayerdat.getTotalDuration().toSeconds())/60 + ":" + Math.round(audioplayerdat.getTotalDuration().toSeconds())%60, audiofilepath.get(newsong)[0]});
+                songsdatlist.set(newsong, new String[]{String.valueOf(newsong), String.valueOf(audiodat.getMetadata().get("artist")).replace("null", "-"), String.valueOf(audiodat.getMetadata().get("title")).replace("null", "-"), (Math.round(audioplayerdat.getTotalDuration().toSeconds())/3600 + ":" + (Math.round(audioplayerdat.getTotalDuration().toSeconds())%3600)/60 + ":" + Math.round(audioplayerdat.getTotalDuration().toSeconds())%60).replaceFirst("0:", ""), audiofilepath.get(newsong)[0]});
                 totplaytim = totplaytim.plusSeconds(Math.round(audioplayerdat.getTotalDuration().toSeconds()));
                 lastplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0);
                 for (int i = 0; i <= song-1; i++)
-                    lastplaytim = lastplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                {
+                    if (songsdatlist.get(i)[3].split(":").length==2)
+                        lastplaytim = lastplaytim.plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[1]));
+                    else
+                        lastplaytim = lastplaytim.plusHours(Long.parseLong(songsdatlist.get(i)[3].split(":")[0])).plusMinutes(Long.parseLong(songsdatlist.get(i)[3].split(":")[1])).plusSeconds(Long.parseLong(songsdatlist.get(i)[3].split(":")[2]));
+                }
                 tableview1.setItems(songsdatlist);
                 label5.setText("Data: 0 MB, 0 kbps, 0 Hz Track: 0/" + newsong + " Playtime: 0:0/0:0/0:0");
                 if (noaddsongs > 1)
