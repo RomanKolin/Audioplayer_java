@@ -59,15 +59,16 @@ public class audioplayer extends Application
     StackPane track;
     StackPane thumb;
     ContextMenu cm;
-    MenuItem mi, mi1;
+    MenuItem mi, mi1, mi2;
     Dragboard db;
-    static Stage stag, stagmetadat;
+    static Stage stag, stagmetadat, stagprop;
     static Label label5;
     static Button button1;
     static Button button2;
     static Button button3;
     static TableView<String[]> tableview1;
     static metadatachanging metadatachanging;
+    static propertieschanging propertieschanging;
 
     @Override
     public void start(Stage stage) throws IOException
@@ -179,8 +180,8 @@ public class audioplayer extends Application
     static Media audio, audiodat;
     static MediaPlayer audioplayer, audioplayerdat;
     static LocalDateTime totplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0), lastplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0);
-    static int play = 0, song = 0, newsong = 0, nosongs = 0, noaddsongs = 0, noaudiofilepathmetadat, metadatchangingnum = 0, openwithgetparam = 0, port = 6657;
-    static StringBuilder art = new StringBuilder(), titl = new StringBuilder();
+    static int play = 0, song = 0, newsong = 0, nosongs = 0, noaddsongs = 0, noaudiofilepathmetadatprop, metadatpropchangingnum = 0, openwithgetparam = 0, port = 6657;
+    static StringBuilder art = new StringBuilder(), titl = new StringBuilder(), br = new StringBuilder(), sr = new StringBuilder(), ch = new StringBuilder();
     static ObservableList<String[]> songsdatlist = FXCollections.observableArrayList(), audiofilepath = FXCollections.observableArrayList();
     static String[][] audiofilepathmetadat;
 
@@ -297,6 +298,7 @@ public class audioplayer extends Application
                 {
                     if (e.getButton() == MouseButton.SECONDARY)
                     {
+                        tableview1.addEventFilter(MouseEvent.ANY, me);
                         cm.show(rf, e.getScreenX(), e.getScreenY());
                         mi.setOnAction(ecm ->
                         {
@@ -315,6 +317,7 @@ public class audioplayer extends Application
                                 {
                                     art.replace(0, art.length(), "");
                                     titl.replace(0, titl.length(), "");
+                                    tableview1.removeEventFilter(MouseEvent.ANY, me);
                                 });
                                 stagmetadat.show();
                             }
@@ -325,8 +328,8 @@ public class audioplayer extends Application
                             metadatachanging = fxmlLoader.getController();
                             metadatachanging.textfield1artist.setContextMenu(new ContextMenu());
                             metadatachanging.textfield2title.setContextMenu(new ContextMenu());
-                            noaudiofilepathmetadat = tableview1songs.getSelectionModel().getSelectedItems().size();
-                            audiofilepathmetadat = new String[noaudiofilepathmetadat][2];
+                            noaudiofilepathmetadatprop = tableview1songs.getSelectionModel().getSelectedItems().size();
+                            audiofilepathmetadat = new String[noaudiofilepathmetadatprop][2];
                             metadatachanging.textfield1artist.requestFocus();
                             metadatachanging.textfield1artist.setEditable(false);
                             for (int i = 0; i < tableview1songs.getSelectionModel().getSelectedItems().size(); i++)
@@ -346,20 +349,90 @@ public class audioplayer extends Application
                             metadatachanging.textfield1artist.setOnMouseClicked(e1 -> metadatachanging.textfield1artist.setEditable(true));
                             metadatachanging.textfield1artist.setOnKeyPressed(e1 ->
                             {
-                                if (e1.getCode().equals(KeyCode.ENTER))
-                                    metadatachanging.button4ok.fire();
-                                if (e1.getCode().equals(KeyCode.ESCAPE))
-                                    metadatachanging.button5cancel.fire();
+                                if (e1.getCode().equals(KeyCode.ENTER) || e1.getCode().equals(KeyCode.ESCAPE))
+                                {
+                                    if (e1.getCode().equals(KeyCode.ENTER))
+                                        metadatachanging.button4ok.fire();
+                                    if (e1.getCode().equals(KeyCode.ESCAPE))
+                                        metadatachanging.button5cancel.fire();
+                                    tableview1.removeEventFilter(MouseEvent.ANY, me);
+                                }
                             });
                             metadatachanging.textfield2title.setOnKeyPressed(e1 ->
                             {
-                                if (e1.getCode().equals(KeyCode.ENTER))
-                                    metadatachanging.button4ok.fire();
-                                if (e1.getCode().equals(KeyCode.ESCAPE))
-                                    metadatachanging.button5cancel.fire();
+                                if (e1.getCode().equals(KeyCode.ENTER) || e1.getCode().equals(KeyCode.ESCAPE))
+                                {
+                                    if (e1.getCode().equals(KeyCode.ENTER))
+                                        metadatachanging.button4ok.fire();
+                                    if (e1.getCode().equals(KeyCode.ESCAPE))
+                                        metadatachanging.button5cancel.fire();
+                                    tableview1.removeEventFilter(MouseEvent.ANY, me);
+                                }
                             });
                         });
                         mi1.setOnAction(ecm ->
+                        {
+                            FXMLLoader fxmlLoader = new FXMLLoader(audioplayer.class.getResource("propertieschanging.fxml"));
+                            try
+                            {
+                                System.setProperty("prism.lcdtext", "false");
+                                scene = new Scene(fxmlLoader.load());
+                                scene.getStylesheets().add("/contextmenu.css");
+                                stagprop = new Stage();
+                                stagprop.setScene(scene);
+                                stagprop.setTitle("Properties");
+                                stagprop.setResizable(false);
+                                stagprop.setAlwaysOnTop(true);
+                                stagprop.setOnCloseRequest(e1 ->
+                                {
+                                    br.replace(0, br.length(), "");
+                                    sr.replace(0, sr.length(), "");
+                                    ch.replace(0, ch.length(), "");
+                                    tableview1.removeEventFilter(MouseEvent.ANY, me);
+                                });
+                                stagprop.show();
+                            }
+                            catch (IOException ex)
+                            {
+                                throw new RuntimeException(ex);
+                            }
+                            propertieschanging = fxmlLoader.getController();
+                            propertieschanging.textfield3bitrate.setContextMenu(new ContextMenu());
+                            propertieschanging.textfield4samplerate.setContextMenu(new ContextMenu());
+                            propertieschanging.textfield5channel.setContextMenu(new ContextMenu());
+                            noaudiofilepathmetadatprop = tableview1songs.getSelectionModel().getSelectedItems().size();
+                            audiofilepathmetadat = new String[noaudiofilepathmetadatprop][2];
+                            propertieschanging.textfield3bitrate.requestFocus();
+                            propertieschanging.textfield3bitrate.setEditable(false);
+                            propertieschanging.textfield4samplerate.setEditable(false);
+                            propertieschanging.textfield5channel.setEditable(false);
+                            for (int i = 0; i < tableview1songs.getSelectionModel().getSelectedItems().size(); i++)
+                            {
+                                audiofile = new File(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItems().get(i)).get(4));
+                                try
+                                {
+                                    br.append(AudioFileIO.read(audiofile).getAudioHeader().getBitRate()).append(" kbps; ");
+                                    sr.append(AudioFileIO.read(audiofile).getAudioHeader().getSampleRate()).append(" Hz; ");
+                                    ch.append(AudioFileIO.read(audiofile).getAudioHeader().getChannels().toLowerCase().replace("joint stereo", "stereo")).append("; ");
+                                }
+                                catch (Exception e1)
+                                {
+                                    throw new RuntimeException(e1);
+                                }
+                                if (i == tableview1songs.getSelectionModel().getSelectedItems().size()-1)
+                                {
+                                    br.replace(0, br.length(), br.substring(0, br.length()-2)).replace(0, br.length(), Arrays.stream(String.valueOf(br).split("; ")).distinct().collect(Collectors.joining("; ")));
+                                    sr.replace(0, sr.length(), sr.substring(0, sr.length()-2)).replace(0, sr.length(), Arrays.stream(String.valueOf(sr).split("; ")).distinct().collect(Collectors.joining("; ")));
+                                    ch.replace(0, ch.length(), ch.substring(0, ch.length()-2)).replace(0, ch.length(), Arrays.stream(String.valueOf(ch).split("; ")).distinct().collect(Collectors.joining("; ")));
+                                    propertieschanging.textfield3bitrate.setText(String.valueOf(br));
+                                    propertieschanging.textfield4samplerate.setText(String.valueOf(sr));
+                                    propertieschanging.textfield5channel.setText(String.valueOf(ch));
+                                }
+                                audiofilepathmetadat[i][0] = String.valueOf(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItems().get(i)).get(0));
+                                audiofilepathmetadat[i][1] = String.valueOf(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItems().get(i)).get(4));
+                            }
+                        });
+                        mi2.setOnAction(ecm ->
                         {
                             try
                             {
@@ -557,9 +630,11 @@ public class audioplayer extends Application
         cm = new ContextMenu();
         mi = new MenuItem("Metadata");
         mi.setStyle("-fx-font-style: italic; -fx-text-fill: #000000");
-        mi1 = new MenuItem("Open on Last.fm");
+        mi1 = new MenuItem("Properties");
         mi1.setStyle("-fx-font-style: italic; -fx-text-fill: #000000");
-        cm.getItems().addAll(mi, mi1);
+        mi2 = new MenuItem("Open on Last.fm");
+        mi2.setStyle("-fx-font-style: italic; -fx-text-fill: #000000");
+        cm.getItems().addAll(mi, mi1, mi2);
     }
 
     public void Tip(TableColumn col)
@@ -704,7 +779,7 @@ public class audioplayer extends Application
         AudioFile afio;
         ID3v24Tag tag;
         String currart, currtitl;
-        String[] songsdatlistarr = songsdatlist.get(Integer.parseInt(audiofilepathmetadat[metadatchangingnum][0]));
+        String[] songsdatlistarr = songsdatlist.get(Integer.parseInt(audiofilepathmetadat[metadatpropchangingnum][0]));
 
         try
         {
@@ -722,7 +797,7 @@ public class audioplayer extends Application
             afio.delete();
             tag = new ID3v24Tag();
             afio.setTag(tag);
-            if (noaudiofilepathmetadat == 1)
+            if (noaudiofilepathmetadatprop == 1)
             {
                 tag.setField(FieldKey.ARTIST, metadatachanging.textfield1artist.getText());
                 tag.setField(FieldKey.TITLE, metadatachanging.textfield2title.getText());
@@ -741,6 +816,22 @@ public class audioplayer extends Application
             songsdatlistarr[2] = afio.getTag().getFirst(FieldKey.TITLE);
             if (play == 1 && song == tableview1.getSelectionModel().getSelectedIndex())
                 com.example.audioplayer.audioplayer.StageTitle().setTitle(afio.getTag().getFirst(FieldKey.ARTIST) + " - " + afio.getTag().getFirst(FieldKey.TITLE));
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void PropertiesChanging(String path)
+    {
+        Process p;
+
+        try
+        {
+            p = Runtime.getRuntime().exec(new String[] {"bash", "-c", "ffmpeg -i '" + path + "' -b:a 320k -ar 44100 -ac 2 audiofile.mp3 && mv audiofile.mp3 '" + path + "'"});
+            p.waitFor();
+            AudioFileIO.write(AudioFileIO.read(new File(path)));
         }
         catch (Exception e)
         {
