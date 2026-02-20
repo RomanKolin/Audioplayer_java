@@ -346,6 +346,7 @@ public class audioplayer extends Application
                                 audiofilepathmetadat[i][0] = String.valueOf(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItems().get(i)).get(0));
                                 audiofilepathmetadat[i][1] = String.valueOf(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItems().get(i)).get(4));
                             }
+                            scene.getRoot().requestFocus();
                             metadatachanging.textfield1artist.setOnMouseClicked(e1 -> metadatachanging.textfield1artist.setEditable(true));
                             metadatachanging.textfield1artist.setOnKeyPressed(e1 ->
                             {
@@ -402,7 +403,6 @@ public class audioplayer extends Application
                             propertieschanging.textfield5channel.setContextMenu(new ContextMenu());
                             noaudiofilepathmetadatprop = tableview1songs.getSelectionModel().getSelectedItems().size();
                             audiofilepathmetadat = new String[noaudiofilepathmetadatprop][2];
-                            propertieschanging.textfield3bitrate.requestFocus();
                             propertieschanging.textfield3bitrate.setEditable(false);
                             propertieschanging.textfield4samplerate.setEditable(false);
                             propertieschanging.textfield5channel.setEditable(false);
@@ -431,6 +431,7 @@ public class audioplayer extends Application
                                 audiofilepathmetadat[i][0] = String.valueOf(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItems().get(i)).get(0));
                                 audiofilepathmetadat[i][1] = String.valueOf(Arrays.asList(tableview1songs.getSelectionModel().getSelectedItems().get(i)).get(4));
                             }
+                            scene.getRoot().requestFocus();
                         });
                         mi2.setOnAction(ecm ->
                         {
