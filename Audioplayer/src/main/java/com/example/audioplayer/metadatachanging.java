@@ -28,6 +28,7 @@ public class metadatachanging
         audioplayer.tableview1.refresh();
         audioplayer.stagmetadat.close();
         audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, audioplayer.me);
+        audioplayer.cmclosing = 1;
     }
 
     public void button5cancel()
@@ -36,5 +37,6 @@ public class metadatachanging
         audioplayer.titl.replace(0, audioplayer.titl.length(), "");
         audioplayer.stagmetadat.close();
         audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, audioplayer.me);
+        audioplayer.cmclosing = 1;
     }
 }

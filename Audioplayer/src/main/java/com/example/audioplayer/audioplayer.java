@@ -180,7 +180,7 @@ public class audioplayer extends Application
     static Media audio, audiodat;
     static MediaPlayer audioplayer, audioplayerdat;
     static LocalDateTime totplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0), lastplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0);
-    static int play = 0, song = 0, newsong = 0, nosongs = 0, noaddsongs = 0, noaudiofilepathmetadatprop, metadatpropchangingnum = 0, openwithgetparam = 0, port = 6657;
+    static int play = 0, song = 0, newsong = 0, nosongs = 0, noaddsongs = 0, noaudiofilepathmetadatprop, metadatpropchangingnum = 0, cmclosing = 1, openwithgetparam = 0, port = 6657;
     static StringBuilder art = new StringBuilder(), titl = new StringBuilder(), br = new StringBuilder(), sr = new StringBuilder(), ch = new StringBuilder();
     static ObservableList<String[]> songsdatlist = FXCollections.observableArrayList(), audiofilepath = FXCollections.observableArrayList();
     static String[][] audiofilepathmetadat;
@@ -282,6 +282,11 @@ public class audioplayer extends Application
         Tip(second);
         Tip(third);
         ContextMenu();
+        cm.setOnHiding(e ->
+        {
+            if (cmclosing == 1)
+                tableview1.removeEventFilter(MouseEvent.ANY, me);
+        });
         tableview1songs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tableview1songs.setRowFactory(rf -> new TableRow<>()
         {
@@ -302,6 +307,7 @@ public class audioplayer extends Application
                         cm.show(rf, e.getScreenX(), e.getScreenY());
                         mi.setOnAction(ecm ->
                         {
+                            cmclosing = 0;
                             FXMLLoader fxmlLoader = new FXMLLoader(audioplayer.class.getResource("metadatachanging.fxml"));
                             try
                             {
@@ -318,6 +324,7 @@ public class audioplayer extends Application
                                     art.replace(0, art.length(), "");
                                     titl.replace(0, titl.length(), "");
                                     tableview1.removeEventFilter(MouseEvent.ANY, me);
+                                    cmclosing = 1;
                                 });
                                 stagmetadat.show();
                             }
@@ -373,6 +380,7 @@ public class audioplayer extends Application
                         });
                         mi1.setOnAction(ecm ->
                         {
+                            cmclosing = 0;
                             FXMLLoader fxmlLoader = new FXMLLoader(audioplayer.class.getResource("propertieschanging.fxml"));
                             try
                             {
@@ -390,6 +398,7 @@ public class audioplayer extends Application
                                     sr.replace(0, sr.length(), "");
                                     ch.replace(0, ch.length(), "");
                                     tableview1.removeEventFilter(MouseEvent.ANY, me);
+                                    cmclosing = 1;
                                 });
                                 stagprop.show();
                             }

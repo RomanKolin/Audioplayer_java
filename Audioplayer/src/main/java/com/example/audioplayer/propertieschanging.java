@@ -35,6 +35,7 @@ public class propertieschanging
         pt.setOnFinished(e -> audioplayer.stagprop.close());
         pt.play();
         audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, audioplayer.me);
+        audioplayer.cmclosing = 1;
     }
 
     public void button7cancel()
@@ -44,5 +45,6 @@ public class propertieschanging
         audioplayer.ch.replace(0, audioplayer.ch.length(), "");
         audioplayer.stagprop.close();
         audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, audioplayer.me);
+        audioplayer.cmclosing = 1;
     }
 }
