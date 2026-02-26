@@ -2,6 +2,7 @@ package com.example.audioplayer;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -658,6 +659,8 @@ public class audioplayer extends Application
             {
                 super.updateItem(item, empty);
 
+                tooltip.setWrapText(true);
+                tooltip.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
                 setText(item);
                 Platform.runLater(() ->
                 {
