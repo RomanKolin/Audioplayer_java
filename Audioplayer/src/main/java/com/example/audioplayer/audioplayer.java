@@ -843,7 +843,7 @@ public class audioplayer extends Application
 
         try
         {
-            p = Runtime.getRuntime().exec(new String[] {"bash", "-c", "ffmpeg -i '" + path + "' -b:a 320k -ar 44100 -ac 2 audiofile.mp3 && mv audiofile.mp3 '" + path + "'"});
+            p = Runtime.getRuntime().exec(new String[] {"bash", "-c", "ffmpeg -i \"" + path + "\" -b:a 320k -ar 44100 -ac 2 audiofile.mp3 && mv audiofile.mp3 \"" + path + "\""});
             p.waitFor();
             AudioFileIO.write(AudioFileIO.read(new File(path)));
         }
