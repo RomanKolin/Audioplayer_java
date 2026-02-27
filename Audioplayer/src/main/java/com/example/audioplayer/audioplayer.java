@@ -659,6 +659,7 @@ public class audioplayer extends Application
             {
                 super.updateItem(item, empty);
 
+                tooltip.setShowDuration(Duration.INDEFINITE);
                 tooltip.setWrapText(true);
                 tooltip.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
                 setText(item);
