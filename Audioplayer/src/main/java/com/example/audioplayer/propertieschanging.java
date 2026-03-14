@@ -22,20 +22,25 @@ public class propertieschanging
 
     public void button6ok()
     {
-        PauseTransition pt = new PauseTransition(Duration.seconds(1));
+        if (!textfield3bitrate.getText().equals("320 kbps") || !textfield4samplerate.getText().equals("44100 Hz") || !textfield5channel.getText().equals("stereo"))
+        {
+            PauseTransition pt = new PauseTransition(Duration.seconds(1));
 
-        textfield3bitrate.setText("320 kbps");
-        textfield4samplerate.setText("44100 Hz");
-        textfield5channel.setText("stereo");
-        for (int i = 0; i < audioplayer.tableview1.getSelectionModel().getSelectedItems().size(); i++)
-            audioplayer.PropertiesChanging(audioplayer.audiofilepathmetadat[i][1]);
-        audioplayer.br.replace(0, audioplayer.br.length(), "");
-        audioplayer.sr.replace(0, audioplayer.sr.length(), "");
-        audioplayer.ch.replace(0, audioplayer.ch.length(), "");
-        pt.setOnFinished(e -> audioplayer.stagprop.close());
-        pt.play();
-        audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, audioplayer.me);
-        audioplayer.cmclosing = 1;
+            textfield3bitrate.setText("320 kbps");
+            textfield4samplerate.setText("44100 Hz");
+            textfield5channel.setText("stereo");
+            for (int i = 0; i < audioplayer.tableview1.getSelectionModel().getSelectedItems().size(); i++)
+                audioplayer.PropertiesChanging(audioplayer.audiofilepathmetadat[i][1]);
+            audioplayer.br.replace(0, audioplayer.br.length(), "");
+            audioplayer.sr.replace(0, audioplayer.sr.length(), "");
+            audioplayer.ch.replace(0, audioplayer.ch.length(), "");
+            pt.setOnFinished(e -> audioplayer.stagprop.close());
+            pt.play();
+            audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, audioplayer.me);
+            audioplayer.cmclosing = 1;
+        }
+        else
+            button7cancel.fire();
     }
 
     public void button7cancel()
