@@ -871,7 +871,7 @@ public class audioplayer extends Application
 
             audioplayer.setOnPlaying(() ->
             {
-                com.example.audioplayer.audioplayer.StageTitle().setTitle(audio.getMetadata().get("artist") + " - " + audio.getMetadata().get("title"));
+                com.example.audioplayer.audioplayer.StageTitle().setTitle((audio.getMetadata().get("artist") + " - " + audio.getMetadata().get("title")).replace("\0", ""));
                 slider1music.setMax(Math.round(audioplayer.getTotalDuration().toSeconds()));
                 track.setOnMouseReleased(e ->
                 {
