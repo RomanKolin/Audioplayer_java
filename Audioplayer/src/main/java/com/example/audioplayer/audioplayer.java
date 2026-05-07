@@ -20,6 +20,7 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleStringProperty;
@@ -104,6 +105,14 @@ public class audioplayer extends Application
             if (i2)
                 stagmetadat.setIconified(true);
         });
+        stage.setOpacity(0);
+        PauseTransition pt = new PauseTransition(Duration.millis(1));
+        pt.setOnFinished(e ->
+        {
+            stage.centerOnScreen();
+            stage.setOpacity(1);
+        });
+        pt.play();
         stage.show();
 
         new Thread(() ->
