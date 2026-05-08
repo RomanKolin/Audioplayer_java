@@ -754,7 +754,7 @@ public class audioplayer extends Application
         {
             audioplayerdat.setOnReady(() ->
             {
-                songsdatlist.set(newsong, new String[]{String.valueOf(newsong), String.valueOf(audiodat.getMetadata().get("artist")).replace("null", "-"), String.valueOf(audiodat.getMetadata().get("title")).replace("null", "-"), (Math.round(audioplayerdat.getTotalDuration().toSeconds())/3600 + ":" + (Math.round(audioplayerdat.getTotalDuration().toSeconds())%3600)/60 + ":" + Math.round(audioplayerdat.getTotalDuration().toSeconds())%60).replaceFirst("0:", ""), audiofilepath.get(newsong)[0]});
+                songsdatlist.set(newsong, new String[]{String.valueOf(newsong), String.valueOf(audiodat.getMetadata().get("artist")).replace("null", "-").replace("\0", ""), String.valueOf(audiodat.getMetadata().get("title")).replace("null", "-").replace("\0", ""), (Math.round(audioplayerdat.getTotalDuration().toSeconds())/3600 + ":" + (Math.round(audioplayerdat.getTotalDuration().toSeconds())%3600)/60 + ":" + Math.round(audioplayerdat.getTotalDuration().toSeconds())%60).replaceFirst("0:", ""), audiofilepath.get(newsong)[0]});
                 totplaytim = totplaytim.plusSeconds(Math.round(audioplayerdat.getTotalDuration().toSeconds()));
                 lastplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0);
                 for (int i = 0; i <= song-1; i++)
