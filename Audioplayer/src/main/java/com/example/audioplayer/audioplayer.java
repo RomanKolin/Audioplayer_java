@@ -661,16 +661,17 @@ public class audioplayer extends Application
     {
         col.setCellFactory(cf -> new TableCell<String, String>()
         {
-            final Tooltip tooltip = new Tooltip();
+            final Tooltip tt = new Tooltip();
 
             @Override
             protected void updateItem(String item, boolean empty)
             {
                 super.updateItem(item, empty);
 
-                tooltip.setShowDuration(Duration.INDEFINITE);
-                tooltip.setWrapText(true);
-                tooltip.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
+                tt.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
+                tt.setStyle("-fx-text-fill: #000000");
+                tt.setWrapText(true);
+                tt.setShowDuration(javafx.util.Duration.INDEFINITE);
                 setText(item);
                 Platform.runLater(() ->
                 {
@@ -679,8 +680,8 @@ public class audioplayer extends Application
                     itemtext.setFont(getFont());
                     if (itemtext.getLayoutBounds().getWidth() > (getWidth() - getPadding().getLeft() - getPadding().getRight()) && getWidth() > 0)
                     {
-                        tooltip.setText(item);
-                        setTooltip(tooltip);
+                        tt.setText(item);
+                        setTooltip(tt);
                     }
                     else
                         setTooltip(null);
