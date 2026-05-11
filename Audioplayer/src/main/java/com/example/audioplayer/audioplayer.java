@@ -227,6 +227,17 @@ public class audioplayer extends Application
             }
             thumb.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-insets: 5 0 5");
             track.styleProperty().bind(Bindings.createStringBinding(() -> "-fx-background-color: linear-gradient(to right, #4B0000 " + perc + "%, #FF0000 0%)", slider1music.valueProperty()));
+
+            track.setOnMouseReleased(e ->
+            {
+                audioplayer.seek(new Duration(slider1music.getValue() * 1000));
+                perc = 100 - (((audioplayer.getTotalDuration().toSeconds()-slider1music.getValue())*100)/audioplayer.getTotalDuration().toSeconds());
+            });
+            thumb.setOnMouseReleased(e ->
+            {
+                audioplayer.seek(new Duration(slider1music.getValue() * 1000));
+                perc = 100 - (((audioplayer.getTotalDuration().toSeconds()-slider1music.getValue())*100)/audioplayer.getTotalDuration().toSeconds());
+            });
         });
 
         HBox1dragndrop.setOnDragOver(deo ->
@@ -883,16 +894,6 @@ public class audioplayer extends Application
             {
                 com.example.audioplayer.audioplayer.StageTitle().setTitle((audio.getMetadata().get("artist") + " - " + audio.getMetadata().get("title")).replace("\0", ""));
                 slider1music.setMax(Math.round(audioplayer.getTotalDuration().toSeconds()));
-                track.setOnMouseReleased(e ->
-                {
-                    audioplayer.seek(new Duration(slider1music.getValue() * 1000));
-                    perc = 100 - (((audioplayer.getTotalDuration().toSeconds()-slider1music.getValue())*100)/audioplayer.getTotalDuration().toSeconds());
-                });
-                thumb.setOnMouseReleased(e ->
-                {
-                    audioplayer.seek(new Duration(slider1music.getValue() * 1000));
-                    perc = 100 - (((audioplayer.getTotalDuration().toSeconds()-slider1music.getValue())*100)/audioplayer.getTotalDuration().toSeconds());
-                });
             });
             audioplayer.setOnEndOfMedia(() ->
             {
@@ -951,7 +952,8 @@ public class audioplayer extends Application
                         throw new RuntimeException(e);
                     }
                 }
-                slider1music.setValue(audioplayer.getCurrentTime().toSeconds());
+                if (!slider1music.isPressed())
+                    slider1music.setValue(audioplayer.getCurrentTime().toSeconds());
                 perc = 100 - (((audioplayer.getTotalDuration().toSeconds()-slider1music.getValue())*100)/audioplayer.getTotalDuration().toSeconds());
                 if (slider1music.getValue() >= audioplayer.getTotalDuration().toSeconds()-0.5)
                     perc = 100;
