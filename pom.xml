@@ -30,7 +30,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.audioplayer/com.example.audioplayer.audioplayer</mainClass>
+                            <mainClass>com.example.audioplayer/com.example.audioplayer.Audioplayer</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

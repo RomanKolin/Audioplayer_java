@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.util.Duration;
 import javafx.animation.PauseTransition;
 
-public class propertieschanging
+public class PropertiesChanging
 {
     @FXML
     TextField textfield3bitrate;
@@ -29,15 +29,15 @@ public class propertieschanging
             textfield3bitrate.setText("320 kbps");
             textfield4samplerate.setText("44100 Hz");
             textfield5channel.setText("stereo");
-            for (int i = 0; i < audioplayer.tableview1.getSelectionModel().getSelectedItems().size(); i++)
-                audioplayer.PropertiesChanging(audioplayer.audiofilepathmetadat[i][1]);
-            audioplayer.br.replace(0, audioplayer.br.length(), "");
-            audioplayer.sr.replace(0, audioplayer.sr.length(), "");
-            audioplayer.ch.replace(0, audioplayer.ch.length(), "");
-            pt.setOnFinished(e -> audioplayer.stagprop.close());
+            for (int i = 0; i < Audioplayer.tableview1.getSelectionModel().getSelectedItems().size(); i++)
+                Audioplayer.propertieschanging(Audioplayer.audiofilepathmetadat[i][1]);
+            Audioplayer.br.replace(0, Audioplayer.br.length(), "");
+            Audioplayer.sr.replace(0, Audioplayer.sr.length(), "");
+            Audioplayer.ch.replace(0, Audioplayer.ch.length(), "");
+            pt.setOnFinished(e -> Audioplayer.stagprop.close());
             pt.play();
-            audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, audioplayer.me);
-            audioplayer.cmclosing = 1;
+            Audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, Audioplayer.me);
+            Audioplayer.cmclosing = 1;
         }
         else
             button7cancel.fire();
@@ -45,11 +45,11 @@ public class propertieschanging
 
     public void button7cancel()
     {
-        audioplayer.br.replace(0, audioplayer.br.length(), "");
-        audioplayer.sr.replace(0, audioplayer.sr.length(), "");
-        audioplayer.ch.replace(0, audioplayer.ch.length(), "");
-        audioplayer.stagprop.close();
-        audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, audioplayer.me);
-        audioplayer.cmclosing = 1;
+        Audioplayer.br.replace(0, Audioplayer.br.length(), "");
+        Audioplayer.sr.replace(0, Audioplayer.sr.length(), "");
+        Audioplayer.ch.replace(0, Audioplayer.ch.length(), "");
+        Audioplayer.stagprop.close();
+        Audioplayer.tableview1.removeEventFilter(MouseEvent.ANY, Audioplayer.me);
+        Audioplayer.cmclosing = 1;
     }
 }

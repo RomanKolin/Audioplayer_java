@@ -39,7 +39,7 @@ import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
 
-public class audioplayer extends Application
+public class Audioplayer extends Application
 {
     @FXML
     Scene scene;
@@ -69,8 +69,8 @@ public class audioplayer extends Application
     static Button button2;
     static Button button3;
     static TableView<String[]> tableview1;
-    static metadatachanging metadatachanging;
-    static propertieschanging propertieschanging;
+    static MetadataChanging metadatachanging;
+    static PropertiesChanging propertieschanging;
 
     @Override
     public void start(Stage stage) throws IOException
@@ -84,12 +84,12 @@ public class audioplayer extends Application
                 if (!fil.isDirectory())
                     audiofilepath.add(audiofilepath.size(), new String[]{getParameters().getRaw().get(i)});
                 else
-                    DirectorySongPaths(getParameters().getRaw().get(i));
+                    directorysongpaths(getParameters().getRaw().get(i));
             }
             openwithgetparam = 1;
         }
 
-        FXMLLoader fxmlLoader = new FXMLLoader(audioplayer.class.getResource("audioplayer.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Audioplayer.class.getResource("Audioplayer.fxml"));
         System.setProperty("prism.lcdtext", "false");
         scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add("/contextmenu.css");
@@ -120,7 +120,7 @@ public class audioplayer extends Application
         {
             try
             {
-                ss = new ServerSocket(port);
+                ss = new ServerSocket(PORT);
                 while (true)
                 {
                     Socket s = ss.accept();
@@ -154,12 +154,12 @@ public class audioplayer extends Application
                             if (!fil.isDirectory())
                                 audiofilepath.add(audiofilepath.size(), new String[]{path[0]});
                             else
-                                DirectorySongPaths(path[0]);
+                                directorysongpaths(path[0]);
                         }
                         openwithgetparam = 1;
                         noaddsongs = audiofilepath.size();
                         songsdatlist.add(songsdatlist.size(), new String[]{null, null, null, null, audiofilepath.get(0)[0]});
-                        SongsMetadata();
+                        songsmetadata();
                     });
                 }
             }
@@ -167,7 +167,7 @@ public class audioplayer extends Application
             {
                 try
                 {
-                    Socket s = new Socket("romankolinPC", port);
+                    Socket s = new Socket("romankolinPC", PORT);
                     PrintWriter writer = new PrintWriter(s.getOutputStream(), true);
 
                     if (!getParameters().getRaw().isEmpty())
@@ -191,7 +191,8 @@ public class audioplayer extends Application
     static Media audio, audiodat;
     static MediaPlayer audioplayer, audioplayerdat;
     static LocalDateTime totplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0), lastplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0);
-    static int play = 0, song = 0, newsong = 0, nosongs = 0, noaddsongs = 0, noaudiofilepathmetadatprop, metadatpropchangingnum = 0, cmclosing = 1, openwithgetparam = 0, port = 6657;
+    static int play = 0, song = 0, newsong = 0, nosongs = 0, noaddsongs = 0, noaudiofilepathmetadatprop, metadatpropchangingnum = 0, cmclosing = 1, openwithgetparam = 0;
+    final static int PORT = 6657;
     static StringBuilder art = new StringBuilder(), titl = new StringBuilder(), br = new StringBuilder(), sr = new StringBuilder(), ch = new StringBuilder();
     static ObservableList<String[]> songsdatlist = FXCollections.observableArrayList(), audiofilepath = FXCollections.observableArrayList();
     static String[][] audiofilepathmetadat;
@@ -214,7 +215,7 @@ public class audioplayer extends Application
         slider1music.addEventFilter(MouseEvent.ANY, me);
         slider1music.skinProperty().addListener((sl, sl1, sl2) ->
         {
-            FXMLLoader fxmlloader = new FXMLLoader(audioplayer.class.getResource("thumb.fxml"));
+            FXMLLoader fxmlloader = new FXMLLoader(Audioplayer.class.getResource("thumb.fxml"));
 
             thumb = (StackPane)slider1music.lookup(".thumb");
             track = (StackPane)slider1music.lookup(".track");
@@ -263,10 +264,10 @@ public class audioplayer extends Application
                                 noaddsongs+=1;
                             }
                             else
-                                DirectorySongPaths(String.valueOf(db.getFiles().get(i)));
+                                directorysongpaths(String.valueOf(db.getFiles().get(i)));
                         }
                         songsdatlist.add(songsdatlist.size(), new String[]{null, null, null, null, String.valueOf(audiofilepath.get(newsong)[0])});
-                        SongsMetadata();
+                        songsmetadata();
                     }
                 }
             });
@@ -301,9 +302,9 @@ public class audioplayer extends Application
         fourth.setReorderable(false);
         fourth.setSortable(false);
         fifth.setVisible(false);
-        Tip(second);
-        Tip(third);
-        ContextMenu();
+        tip(second);
+        tip(third);
+        contextmenu();
         cm.setOnHiding(e ->
         {
             if (cmclosing == 1)
@@ -330,7 +331,7 @@ public class audioplayer extends Application
                         mi.setOnAction(ecm ->
                         {
                             cmclosing = 0;
-                            FXMLLoader fxmlLoader = new FXMLLoader(audioplayer.class.getResource("metadatachanging.fxml"));
+                            FXMLLoader fxmlLoader = new FXMLLoader(Audioplayer.class.getResource("MetadataChanging.fxml"));
                             try
                             {
                                 System.setProperty("prism.lcdtext", "false");
@@ -403,7 +404,7 @@ public class audioplayer extends Application
                         mi1.setOnAction(ecm ->
                         {
                             cmclosing = 0;
-                            FXMLLoader fxmlLoader = new FXMLLoader(audioplayer.class.getResource("propertieschanging.fxml"));
+                            FXMLLoader fxmlLoader = new FXMLLoader(Audioplayer.class.getResource("PropertiesChanging.fxml"));
                             try
                             {
                                 System.setProperty("prism.lcdtext", "false");
@@ -575,7 +576,7 @@ public class audioplayer extends Application
                             newsong = getIndex()+1;
                             audiofilepath.add(getIndex()+1, new String[]{String.valueOf(de.getDragboard().getFiles().get(0))});
                             songsdatlist.add(getIndex()+1, new String[]{null, null, null, null, String.valueOf(audiofilepath.get(getIndex()+1)[0])});
-                            SongsMetadata();
+                            songsmetadata();
                             if (song > getIndex())
                                 song+=1;
                         }
@@ -640,7 +641,7 @@ public class audioplayer extends Application
                 }
                 nosongs = songsdatlist.size();
                 newsong = nosongs;
-                SongData();
+                songdata();
             }
         });
 
@@ -648,16 +649,16 @@ public class audioplayer extends Application
         {
             noaddsongs = audiofilepath.size();
             songsdatlist.add(songsdatlist.size(), new String[]{null, null, null, null, audiofilepath.get(0)[0]});
-            SongsMetadata();
+            songsmetadata();
         }
     }
 
-    public static Stage StageTitle()
+    public static Stage stagetitle()
     {
         return stag;
     }
 
-    public void ContextMenu() throws RuntimeException
+    public void contextmenu() throws RuntimeException
     {
         cm = new ContextMenu();
         mi = new MenuItem("Metadata");
@@ -669,7 +670,7 @@ public class audioplayer extends Application
         cm.getItems().addAll(mi, mi1, mi2);
     }
 
-    public void Tip(TableColumn col)
+    public void tip(TableColumn col)
     {
         col.setCellFactory(cf -> new TableCell<String, String>()
         {
@@ -702,7 +703,7 @@ public class audioplayer extends Application
         });
     }
 
-    public static void SongData()
+    public static void songdata()
     {
         if (totplaytim.getDayOfYear()-1 < 1 && totplaytim.getHour() < 1)
             label5.setText("Data: 0 MB, 0 kbps, 0 Hz Track: 0/" + nosongs + " Playtime: 0:0/0:0/" + totplaytim.getMinute() + ":" + totplaytim.getSecond());
@@ -712,7 +713,7 @@ public class audioplayer extends Application
             label5.setText("Data: 0 MB, 0 kbps, 0 Hz Track: 0/" + nosongs + " Playtime: 0:0/0d 0:0:0/" + (totplaytim.getDayOfYear()-1) + "d " + totplaytim.getHour() + ":" + totplaytim.getMinute() + ":" + totplaytim.getSecond());
     }
 
-    public void DirectorySongPaths(String path)
+    public void directorysongpaths(String path)
     {
         File fil = new File(path);
         File[] filarr = fil.listFiles();
@@ -721,7 +722,7 @@ public class audioplayer extends Application
         for (int i = 0; i < fil.listFiles().length; i++)
         {
             if (filarr[i].isDirectory())
-                DirectorySongPaths(String.valueOf(filarr[i]));
+                directorysongpaths(String.valueOf(filarr[i]));
             else
             {
                 audiofilepath.add(audiofilepath.size(), new String[]{String.valueOf(filarr[i])});
@@ -730,7 +731,7 @@ public class audioplayer extends Application
         }
     }
 
-    public void Audioplayer()
+    public void audioplayer()
     {
         audiofile = new File(String.valueOf(songsdatlist.get(song)[4]));
         audio = new Media(String.valueOf(audiofile.toURI()));
@@ -739,7 +740,7 @@ public class audioplayer extends Application
         play = 1;
     }
 
-    public static void SongsMetadata()
+    public static void songsmetadata()
     {
         button1.addEventFilter(MouseEvent.ANY, me);
         button2.addEventFilter(MouseEvent.ANY, me);
@@ -786,7 +787,7 @@ public class audioplayer extends Application
                     noaddsongs-=1;
                     nosongs+=1;
                     audioplayerdat.dispose();
-                    SongsMetadata();
+                    songsmetadata();
                 }
                 else
                 {
@@ -798,7 +799,7 @@ public class audioplayer extends Application
                     button2.removeEventFilter(MouseEvent.ANY, me);
                     button3.removeEventFilter(MouseEvent.ANY, me);
                     tableview1.removeEventFilter(MouseEvent.ANY, me);
-                    SongData();
+                    songdata();
                     if (openwithgetparam == 1 && nosongs==1)
                     {
                         button1.fire();
@@ -809,7 +810,7 @@ public class audioplayer extends Application
         }
     }
 
-    public static void MetadataChanging(String path)
+    public static void metadatachanging(String path)
     {
         File fil = new File(path);
         AudioFile afio;
@@ -851,7 +852,7 @@ public class audioplayer extends Application
             songsdatlistarr[1] = afio.getTag().getFirst(FieldKey.ARTIST);
             songsdatlistarr[2] = afio.getTag().getFirst(FieldKey.TITLE);
             if (play == 1 && song == tableview1.getSelectionModel().getSelectedIndex())
-                com.example.audioplayer.audioplayer.StageTitle().setTitle(afio.getTag().getFirst(FieldKey.ARTIST) + " - " + afio.getTag().getFirst(FieldKey.TITLE));
+                Audioplayer.stagetitle().setTitle(afio.getTag().getFirst(FieldKey.ARTIST) + " - " + afio.getTag().getFirst(FieldKey.TITLE));
         }
         catch (Exception e)
         {
@@ -859,7 +860,7 @@ public class audioplayer extends Application
         }
     }
 
-    public static void PropertiesChanging(String path)
+    public static void propertieschanging(String path)
     {
         Process p;
 
@@ -886,14 +887,14 @@ public class audioplayer extends Application
                 tableview1songs.scrollTo(song);
 
             if (play == 0)
-                Audioplayer();
+                audioplayer();
             stat = audioplayer.getStatus();
             if (stat == Status.PAUSED)
                 audioplayer.play();
 
             audioplayer.setOnPlaying(() ->
             {
-                com.example.audioplayer.audioplayer.StageTitle().setTitle((audio.getMetadata().get("artist") + " - " + audio.getMetadata().get("title")).replace("\0", ""));
+                Audioplayer.stagetitle().setTitle((audio.getMetadata().get("artist") + " - " + audio.getMetadata().get("title")).replace("\0", ""));
                 slider1music.setMax(Math.round(audioplayer.getTotalDuration().toSeconds()));
             });
             audioplayer.setOnEndOfMedia(() ->
@@ -914,8 +915,8 @@ public class audioplayer extends Application
                     song = 0;
                     lastplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0);
                     tableview1songs.getSelectionModel().clearSelection();
-                    com.example.audioplayer.audioplayer.StageTitle().setTitle("Audioplayer");
-                    SongData();
+                    Audioplayer.stagetitle().setTitle("Audioplayer");
+                    songdata();
                 }
             });
             audioplayer.currentTimeProperty().addListener((ctl, ctl1, ctl2) ->
@@ -984,9 +985,9 @@ public class audioplayer extends Application
             play = 0;
             song = 0;
             lastplaytim = LocalDateTime.of(0, 1, 1, 0, 0, 0);
-            com.example.audioplayer.audioplayer.StageTitle().setTitle("Audioplayer");
+            Audioplayer.stagetitle().setTitle("Audioplayer");
             if (!songsdatlist.isEmpty())
-                SongData();
+                songdata();
         }
     }
 

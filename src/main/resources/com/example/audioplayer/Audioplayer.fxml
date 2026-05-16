@@ -9,7 +9,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.geometry.Insets?>
 
-<FlowPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.audioplayer.audioplayer" orientation="VERTICAL" prefWidth="700" prefHeight="200" style="-fx-background-image: url(/background.jpg); -fx-background-size: stretch">
+<FlowPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.audioplayer.Audioplayer" orientation="VERTICAL" prefWidth="700" prefHeight="200" style="-fx-background-image: url(/background.jpg); -fx-background-size: stretch">
     <padding>
         <Insets bottom="5" left="5" top="5" right="5"/>
     </padding>

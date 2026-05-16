@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<FlowPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.audioplayer.propertieschanging" orientation="VERTICAL" prefWidth="175" prefHeight="100" style="-fx-background-image: url(/background.jpg); -fx-background-size: stretch">
+<FlowPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.audioplayer.PropertiesChanging" orientation="VERTICAL" prefWidth="175" prefHeight="100" style="-fx-background-image: url(/background.jpg); -fx-background-size: stretch">
     <padding>
         <Insets bottom="5" left="5" top="5" right="5"/>
     </padding>
