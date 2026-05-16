@@ -99,6 +99,7 @@ public class audioplayer extends Application
         stage.getIcons().add(new Image("/audioplayericon.png"));
         stage.setTitle("Audioplayer");
         stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
         stage.setOnCloseRequest(e -> Platform.exit());
         stage.iconifiedProperty().addListener((i, i1, i2) ->
         {
